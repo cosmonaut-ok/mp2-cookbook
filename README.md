@@ -1,6 +1,6 @@
 # MP2 Cookbook
 
-[![Cookbook](https://img.shields.io/cookbook/v/pm2.svg)](https://supermarket.chef.io/cookbooks/pm2)
+[![Cookbook](https://img.shields.io/cookbook/v/mp2.svg)](https://supermarket.chef.io/cookbooks/mp2)
 [![Build Status](https://travis-ci.org/cosmonaut-ok/mp2-cookbook.svg?branch=master)](https://travis-ci.org/cosmonaut-ok/mp2-cookbook)
 
 A fork of [pm2-cookbook](https://github.com/Mindera/pm2-cookbook) as it is not under maintenence for a years. MP2 is Chef coookbook to install and manage [PM2](https://github.com/Unitech/pm2).
