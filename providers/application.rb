@@ -29,7 +29,7 @@ action :deploy do
   # Deploy pm2 application json config
   template pm2_config do
     source 'application.json.erb'
-    variables(:config => config)
+    variables(config: config)
     cookbook 'pm2'
     mode '0600'
     backup false
@@ -44,7 +44,7 @@ action :deploy do
       pm2_command("delete --force #{new_resource.artifact}")
       action_undeploy
       action_start
-      puts "done"
+      puts 'done'
     end
     # only_if { pm2_app_online? }
     action :nothing
@@ -162,9 +162,9 @@ end
 
 def pm2_app_online?
   cmd = shell_out!('pm2 list',
-                   :user => new_resource.user,
-                   :returns => 0,
-                   :environment => pm2_environment)
+                   user: new_resource.user,
+                   returns: 0,
+                   environment: pm2_environment)
   !cmd.stdout.match(new_resource.name).nil?
 end
 

@@ -2,9 +2,9 @@ name 'mp2'
 maintainer 'CosmonauT'
 maintainer_email 'cosmonaut.ok@zoho.com'
 license 'MIT'
-description 'Installs/Configures PM2'
+description 'Installs/Configures PM2. Fork of PM2 cookbook'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.1.2'
+version '0.1.3'
 
 depends 'poise-javascript', '~> 1.1.0'
 
