@@ -29,9 +29,31 @@ action :deploy do
     source 'application.json.erb'
     variables(:config => config)
     cookbook 'pm2'
-    mode '0644'
+    mode '0600'
     backup false
+    sensitive true
+    owner new_resource.user
+    notifies :run, "ruby_block[redeploy #{new_resource.name} on config change]", :delayed
   end
+
+  ## reload pm2 if application is online and config changed
+  ruby_block "redeploy #{new_resource.name} on config change" do
+    block do
+      pm2_command("delete --force #{new_resource.artifact}")
+      action_undeploy
+      action_start
+      puts "done"
+    end
+    # only_if { pm2_app_online? }
+    action :nothing
+  end
+end
+
+action :undeploy do
+  Chef::Log.info "Undeploying pm2 application #{new_resource.name}"
+
+  # Undeploy pm2 application pm2_config = "/etc/pm2/conf.d/#{resource.name}.json"
+  pm2_command("delete --force #{new_resource.artifact}") if pm2_app_online?
 end
 
 action :start do
@@ -44,8 +66,8 @@ end
 action :delete do
   Chef::Log.info "Deleting pm2 application #{new_resource.name}"
 
-  # Stop pm2 application
-  pm2_command("stop #{new_resource.name}") if pm2_app_online?
+  # Undeploy pm2 application
+  action_undeploy
 
   # Remove pm2 application json config
   file pm2_config do
@@ -58,28 +80,28 @@ action :stop do
   Chef::Log.info "Stopping pm2 application #{new_resource.name}"
 
   # Stop pm2 application
-  pm2_command("stop #{new_resource.name}") if pm2_app_online?
+  pm2_command("stop #{new_resource.artifact}") if pm2_app_online?
 end
 
 action :restart do
   Chef::Log.info "Restarting pm2 application #{new_resource.name}"
 
   # Restart pm2 application
-  pm2_command("restart #{new_resource.name}")
+  pm2_command("restart #{new_resource.artifact}")
 end
 
 action :reload do
   Chef::Log.info "Reloading pm2 application #{new_resource.name}"
 
   # Reload pm2 application
-  pm2_command("reload #{new_resource.name}")
+  pm2_command("reload #{new_resource.artifact}")
 end
 
 action :graceful_reload do
   Chef::Log.info "Gracefully reloading pm2 application #{new_resource.name}"
 
   # Gracefully reload pm2 application
-  pm2_command("gracefulReload #{new_resource.name}") if pm2_app_online?
+  pm2_command("gracefulReload #{new_resource.artifact}") if pm2_app_online?
 end
 
 action :start_or_restart do
@@ -162,6 +184,7 @@ def resource_attrs
   %w(
     name
     script
+    restart_delay
     args
     env
     node_args

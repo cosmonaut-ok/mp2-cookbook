@@ -7,4 +7,5 @@
 
 default_unless['pm2']['pm2_version'] = 'latest'
 default_unless['pm2']['npm_version'] = 'latest'
-default_unless['pm2']['node_version'] = '4.5.0'
+default_unless['pm2']['node_version'] = '10.13.0'
+default_unless['pm2']['manage_pm2'] = true
