@@ -1,6 +1,6 @@
-name 'pm2'
-maintainer 'Mindera'
-maintainer_email 'miguel.fonseca@mindera.com'
+name 'mp2'
+maintainer 'CosmonauT'
+maintainer_email 'cosmonaut.ok@zoho.com'
 license 'MIT'
 description 'Installs/Configures PM2'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))

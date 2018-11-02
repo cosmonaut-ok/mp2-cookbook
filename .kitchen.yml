@@ -13,5 +13,5 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[pm2_application::default]
+      - recipe[mp2_application::default]
     attributes:

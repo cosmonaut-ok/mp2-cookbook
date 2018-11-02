@@ -15,6 +15,8 @@ action :deploy do
   resource_attrs.each do |key|
     config[key] = eval("new_resource.#{key}") unless eval("new_resource.#{key}.nil?")
   end
+  # pm2 does not differs artifact and application name
+  config['name'] = new_resource.artifact
 
   # Make sure the pm2 config dir exist
   directory '/etc/pm2/conf.d' do
